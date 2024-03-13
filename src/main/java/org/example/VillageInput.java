@@ -3,6 +3,7 @@ package org.example;
 import org.example.interfaces.IAction;
 import org.example.objects.PossibleProject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -24,8 +25,8 @@ public class VillageInput {
         actions.put("1", () -> AddWorker());
         actions.put("2", () -> AddProject());
         actions.put("3", () -> village.Day());
-        actions.put("4", () -> Load());
-        actions.put("5", () -> Save());
+        actions.put("4", () -> Load(System.in));
+        actions.put("5", () -> Save(System.in));
         actions.put("6", () -> village.GameOver());
 
         options.add("1: Add Worker.");
@@ -88,7 +89,8 @@ public class VillageInput {
         System.out.println();
     }
 
-    public void Save() {
+    public void Save(InputStream inputStream) {
+        Scanner sc = new Scanner(inputStream);
         System.out.println("What name do you wish to save the village under? Current villages are: ");
         ArrayList<String> villages = databaseConnection.GetTownNames();
 
@@ -97,7 +99,7 @@ public class VillageInput {
         }
         System.out.println();
 
-        String choice = scanner.nextLine();
+        String choice = sc.nextLine();
 
         if (villages.contains(choice)) {
             System.out.println("Are you sure you want to overwrite " + choice + "? Write \"y\" for yes. Anything else for no.");
@@ -116,9 +118,11 @@ public class VillageInput {
         else {
             System.out.println("Error, something went wrong. Could not save.");
         }
+        sc.close();
     }
 
-    public void Load() {
+    public void Load(InputStream inputStream) {
+        Scanner sc = new Scanner(inputStream);
         System.out.println("Which village would you like to load? The choices are: ");
         ArrayList<String> villages = databaseConnection.GetTownNames();
 
@@ -127,7 +131,7 @@ public class VillageInput {
         }
         System.out.println();
 
-        String choice = scanner.nextLine();
+        String choice = sc.nextLine();
 
         if (!villages.contains(choice)) {
             System.out.println("That's not one of the choices.");
@@ -142,5 +146,6 @@ public class VillageInput {
         else {
             System.out.println("Load failed.");
         }
+        sc.close();
     }
 }

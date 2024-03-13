@@ -31,12 +31,14 @@ class VillageInputTest {
         when(databaseConnection.SaveVillage(any(Village.class), anyString())).thenReturn(true);
 
         // Set up input
-        String input = "new_village\ny\n";
+        String input = """
+                new_village
+                y
+                """;
         InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
 
         // Call method
-        villageInput.Save();
+        villageInput.Save(in);
 
         // Verify interactions
         verify(databaseConnection, times(1)).GetTownNames();
@@ -52,12 +54,11 @@ class VillageInputTest {
         when(databaseConnection.LoadVillage(anyString())).thenReturn(new Village());
 
         // Set up input
-        String input = "existing_village\n";
+        String input = "existing_village" + "\n";
         InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
 
         // Call method
-        villageInput.Load();
+        villageInput.Load(in);
 
         // Verify interactions
         verify(databaseConnection, times(1)).GetTownNames();
